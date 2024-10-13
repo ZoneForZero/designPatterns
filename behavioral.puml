@@ -134,50 +134,6 @@ namespace iterator {
 
 "iterator.Iterator" <|-- "iterator.NumberIterator"
 
-namespace main {
-    class Account << (S,Aquamarine) >> {
-        + State ActionState
-        + HealthValue int
-
-        - changeState() 
-
-        + Post() 
-        + View() 
-        + Comment() 
-        + SetHealth(value int) 
-
-    }
-    interface ActionState  {
-        + View() 
-        + Comment() 
-        + Post() 
-
-    }
-    class CloseState << (S,Aquamarine) >> {
-        + Post() 
-        + View() 
-        + Comment() 
-
-    }
-    class NormalState << (S,Aquamarine) >> {
-        + Post() 
-        + View() 
-        + Comment() 
-
-    }
-    class RestrictState << (S,Aquamarine) >> {
-        + Post() 
-        + View() 
-        + Comment() 
-
-    }
-}
-
-"main.ActionState" <|-- "main.Account"
-"main.ActionState" <|-- "main.CloseState"
-"main.ActionState" <|-- "main.NormalState"
-"main.ActionState" <|-- "main.RestrictState"
-
 namespace mediator {
     class ChatRoom << (S,Aquamarine) >> {
         + Message string
@@ -270,6 +226,50 @@ namespace observer {
 
 "observer.Customer" <|-- "observer.CustomerA"
 "observer.Customer" <|-- "observer.CustomerB"
+
+namespace state {
+    class Account << (S,Aquamarine) >> {
+        + State ActionState
+        + HealthValue int
+
+        - changeState() 
+
+        + Post() 
+        + View() 
+        + Comment() 
+        + SetHealth(value int) 
+
+    }
+    interface ActionState  {
+        + View() 
+        + Comment() 
+        + Post() 
+
+    }
+    class CloseState << (S,Aquamarine) >> {
+        + Post() 
+        + View() 
+        + Comment() 
+
+    }
+    class NormalState << (S,Aquamarine) >> {
+        + Post() 
+        + View() 
+        + Comment() 
+
+    }
+    class RestrictState << (S,Aquamarine) >> {
+        + Post() 
+        + View() 
+        + Comment() 
+
+    }
+}
+
+"state.ActionState" <|-- "state.Account"
+"state.ActionState" <|-- "state.CloseState"
+"state.ActionState" <|-- "state.NormalState"
+"state.ActionState" <|-- "state.RestrictState"
 
 namespace strategy {
     class CashStrategy << (S,Aquamarine) >> {
