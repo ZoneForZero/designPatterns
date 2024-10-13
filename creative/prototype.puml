@@ -1,0 +1,17 @@
+@startuml
+namespace prototype {
+    class ConcretePrototype << (S,Aquamarine) >> {
+        - name string
+
+        + Clone() Prototype
+
+    }
+    interface Prototype  {
+        + Clone() Prototype
+
+    }
+}
+
+"prototype.Prototype" <|-- "prototype.ConcretePrototype"
+
+@enduml

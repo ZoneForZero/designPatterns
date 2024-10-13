@@ -1,0 +1,43 @@
+@startuml
+namespace factoryMethod {
+    interface Operator  {
+        + SetA( int) 
+        + SetB( int) 
+        + Result() int
+
+    }
+    class OperatorBase << (S,Aquamarine) >> {
+        - a int
+
+        + SetA(a int) 
+        + SetB(b int) 
+
+    }
+    interface OperatorFactory  {
+        + Create() Operator
+
+    }
+    class PlusOperator << (S,Aquamarine) >> {
+        + Result() int
+
+    }
+    class PlusOperatorFactory << (S,Aquamarine) >> {
+        + Create() Operator
+
+    }
+    class SubOperator << (S,Aquamarine) >> {
+        + Result() int
+
+    }
+    class SubOperatorFactory << (S,Aquamarine) >> {
+        + Create() Operator
+
+    }
+}
+"factoryMethod.OperatorBase" *-- "factoryMethod.PlusOperator"
+"factoryMethod.OperatorBase" *-- "factoryMethod.SubOperator"
+
+"factoryMethod.OperatorFactory" <|-- "factoryMethod.PlusOperatorFactory"
+"factoryMethod.OperatorFactory" <|-- "factoryMethod.SubOperatorFactory"
+
+@enduml

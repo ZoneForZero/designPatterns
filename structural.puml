@@ -1,0 +1,185 @@
+@startuml
+namespace adapter {
+    interface AlipayInterface  {
+        + Pay(money int) 
+
+    }
+    class AlipayPay << (S,Aquamarine) >> {
+        + Pay(money int) 
+
+    }
+    class NewAdapter << (S,Aquamarine) >> {
+        + DealPay(payType string, money int) 
+
+    }
+    interface TargetPayInterface  {
+        + DealPay(payType string, money int) 
+
+    }
+    class WeixinPay << (S,Aquamarine) >> {
+        + Pay(money int) 
+
+    }
+    interface WeixinPayInterface  {
+        + Pay(money int) 
+
+    }
+}
+"adapter.AlipayInterface" *-- "adapter.NewAdapter"
+"adapter.WeixinPayInterface" *-- "adapter.NewAdapter"
+
+"adapter.AlipayInterface" <|-- "adapter.AlipayPay"
+"adapter.WeixinPayInterface" <|-- "adapter.AlipayPay"
+"adapter.TargetPayInterface" <|-- "adapter.NewAdapter"
+"adapter.AlipayInterface" <|-- "adapter.WeixinPay"
+"adapter.WeixinPayInterface" <|-- "adapter.WeixinPay"
+
+namespace bridge {
+    interface Computer  {
+        + Print() 
+        + SetPrinter( Printer) 
+
+    }
+    class Epson << (S,Aquamarine) >> {
+        + PrintFile() 
+
+    }
+    class Hp << (S,Aquamarine) >> {
+        + PrintFile() 
+
+    }
+    class Mac << (S,Aquamarine) >> {
+        - printer Printer
+
+        + Print() 
+        + SetPrinter(p Printer) 
+
+    }
+    interface Printer  {
+        + PrintFile() 
+
+    }
+    class Windows << (S,Aquamarine) >> {
+        - printer Printer
+
+        + Print() 
+        + SetPrinter(p Printer) 
+
+    }
+}
+
+"bridge.Printer" <|-- "bridge.Epson"
+"bridge.Printer" <|-- "bridge.Hp"
+"bridge.Computer" <|-- "bridge.Mac"
+"bridge.Computer" <|-- "bridge.Windows"
+
+namespace composite {
+    class DirectoryNode << (S,Aquamarine) >> {
+        - nodes []FileSystemNode
+
+        + Display(separator string) 
+        + Add(f FileSystemNode) 
+
+    }
+    class FileCommonFunc << (S,Aquamarine) >> {
+        - fileName string
+
+        + SetFileName(fileName string) 
+
+    }
+    class FileNode << (S,Aquamarine) >> {
+        + Display(separator string) 
+
+    }
+    interface FileSystemNode  {
+        + Display(separator string) 
+
+    }
+}
+"composite.FileCommonFunc" *-- "composite.DirectoryNode"
+"composite.FileCommonFunc" *-- "composite.FileNode"
+
+"composite.FileSystemNode" <|-- "composite.DirectoryNode"
+"composite.FileSystemNode" <|-- "composite.FileNode"
+
+namespace decorator {
+    class Car << (S,Aquamarine) >> {
+        + Brand string
+        + Price float64
+
+    }
+    class ExtraPriceDecorator << (S,Aquamarine) >> {
+        + ExtraPrice float64
+
+        + DecoratePrice(car Car) Car
+
+    }
+    interface PriceDecorator  {
+        + DecoratePrice(c Car) Car
+
+    }
+}
+
+"decorator.PriceDecorator" <|-- "decorator.ExtraPriceDecorator"
+
+namespace facade {
+    class AudioMixer << (S,Aquamarine) >> {
+        + Fix(name string) 
+
+    }
+    class MediaMixer << (S,Aquamarine) >> {
+        - audioMixer *AudioMixer
+        - videoMixer *VideoMixer
+
+        + Fix(name string) 
+
+    }
+    class VideoMixer << (S,Aquamarine) >> {
+        + Fix(name string) 
+
+    }
+}
+
+
+namespace flyweight {
+    class ImageFlyweight << (S,Aquamarine) >> {
+        - data string
+
+        + Data() string
+
+    }
+    class ImageFlyweightFactory << (S,Aquamarine) >> {
+        - maps <font color=blue>map</font>[string]*ImageFlyweight
+
+        + Get(filename string) *ImageFlyweight
+
+    }
+    class ImageViewer << (S,Aquamarine) >> {
+        + Display() 
+
+    }
+}
+"flyweight.ImageFlyweight" *-- "flyweight.ImageViewer"
+
+
+namespace proxy {
+    class AliPay << (S,Aquamarine) >> {
+        - pay(order string) string
+
+    }
+    class PaymentProxy << (S,Aquamarine) >> {
+        - realPay PaymentService
+
+        - pay(order string) string
+
+    }
+    interface PaymentService  {
+        - pay(order string) string
+
+    }
+}
+
+"proxy.PaymentService" <|-- "proxy.AliPay"
+"proxy.PaymentService" <|-- "proxy.PaymentProxy"
+
+@enduml

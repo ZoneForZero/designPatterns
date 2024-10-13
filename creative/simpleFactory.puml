@@ -1,0 +1,20 @@
+@startuml
+namespace simpleFactory {
+    interface IDownload  {
+        + Download() 
+
+    }
+    class NfsDownloader << (S,Aquamarine) >> {
+        + Download() 
+
+    }
+    class SmbDownloader << (S,Aquamarine) >> {
+        + Download() 
+
+    }
+}
+
+"simpleFactory.IDownload" <|-- "simpleFactory.NfsDownloader"
+"simpleFactory.IDownload" <|-- "simpleFactory.SmbDownloader"
+
+@enduml

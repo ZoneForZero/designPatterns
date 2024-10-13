@@ -1,0 +1,29 @@
+@startuml
+namespace builder {
+    class ConcreteBuilder << (S,Aquamarine) >> {
+        - goods *Goods
+
+        + Build() *Goods
+        + SetName(name string) GoodsBuilder
+        + SetPrice(price float64) GoodsBuilder
+        + SetCount(count int) GoodsBuilder
+
+    }
+    class Goods << (S,Aquamarine) >> {
+        + Name string
+        + Price float64
+        + Count int
+
+    }
+    interface GoodsBuilder  {
+        + SetName(name string) GoodsBuilder
+        + SetPrice(price float64) GoodsBuilder
+        + SetCount(count int) GoodsBuilder
+        + Build() *Goods
+
+    }
+}
+
+"builder.GoodsBuilder" <|-- "builder.ConcreteBuilder"
+
+@enduml

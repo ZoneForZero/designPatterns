@@ -1,0 +1,365 @@
+@startuml
+namespace chainOfResponsibility {
+    class CityHandler << (S,Aquamarine) >> {
+        + NextHandler Handler
+
+        + SetNext(handler Handler) 
+        + Handle(request int) 
+
+    }
+    interface Handler  {
+        + SetNext(handler Handler) 
+        + Handle(request int) 
+
+    }
+    class ProvinceHandler << (S,Aquamarine) >> {
+        + NextHandler Handler
+
+        + SetNext(handler Handler) 
+        + Handle(request int) 
+
+    }
+    class TownHandler << (S,Aquamarine) >> {
+        + NextHandler Handler
+
+        + SetNext(handler Handler) 
+        + Handle(request int) 
+
+    }
+}
+
+"chainOfResponsibility.Handler" <|-- "chainOfResponsibility.CityHandler"
+"chainOfResponsibility.Handler" <|-- "chainOfResponsibility.ProvinceHandler"
+"chainOfResponsibility.Handler" <|-- "chainOfResponsibility.TownHandler"
+
+namespace command {
+    interface ICommand  {
+        + Execute() 
+
+    }
+    class Invoker << (S,Aquamarine) >> {
+        - commands []ICommand
+
+        + AddCommand(cmd ICommand) 
+        + Call() 
+
+    }
+    class ShutdownCommand << (S,Aquamarine) >> {
+        - tv *TV
+
+        + Execute() 
+
+    }
+    class TV << (S,Aquamarine) >> {
+        + Name string
+
+        + ShutDown() 
+        + TurnOn() 
+
+    }
+    class TurnOnCommand << (S,Aquamarine) >> {
+        - tv *TV
+
+        + Execute() 
+
+    }
+}
+
+"command.ICommand" <|-- "command.ShutdownCommand"
+"command.ICommand" <|-- "command.TurnOnCommand"
+
+namespace interpreter {
+    class AdditionExpression << (S,Aquamarine) >> {
+        - left Expression
+
+        + Interpret() int
+
+    }
+    interface Expression  {
+        + Interpret() int
+
+    }
+    class NumberExpression << (S,Aquamarine) >> {
+        - val int
+
+        + Interpret() int
+
+    }
+    class Parser << (S,Aquamarine) >> {
+        - exp []string
+        - index int
+        - prev Expression
+
+        - newAdditionExpression() Expression
+        - newSubtractionExpression() Expression
+        - newNumberExpression() Expression
+
+        + Parse(exp string) 
+        + Result() Expression
+
+    }
+    class SubtractionExpression << (S,Aquamarine) >> {
+        - left Expression
+
+        + Interpret() int
+
+    }
+}
+
+"interpreter.Expression" <|-- "interpreter.AdditionExpression"
+"interpreter.Expression" <|-- "interpreter.NumberExpression"
+"interpreter.Expression" <|-- "interpreter.SubtractionExpression"
+
+namespace iterator {
+    interface Iterator  {
+        + Next() <font color=blue>interface</font>{}
+        + HasNext() bool
+
+    }
+    class NumberIterator << (S,Aquamarine) >> {
+        - numbers []int
+        - index int
+
+        + Next() <font color=blue>interface</font>{}
+        + HasNext() bool
+
+    }
+    class Numbers << (S,Aquamarine) >> {
+        - numbers []int
+
+        + GetIterator() Iterator
+
+    }
+}
+
+"iterator.Iterator" <|-- "iterator.NumberIterator"
+
+namespace main {
+    class Account << (S,Aquamarine) >> {
+        + State ActionState
+        + HealthValue int
+
+        - changeState() 
+
+        + Post() 
+        + View() 
+        + Comment() 
+        + SetHealth(value int) 
+
+    }
+    interface ActionState  {
+        + View() 
+        + Comment() 
+        + Post() 
+
+    }
+    class CloseState << (S,Aquamarine) >> {
+        + Post() 
+        + View() 
+        + Comment() 
+
+    }
+    class NormalState << (S,Aquamarine) >> {
+        + Post() 
+        + View() 
+        + Comment() 
+
+    }
+    class RestrictState << (S,Aquamarine) >> {
+        + Post() 
+        + View() 
+        + Comment() 
+
+    }
+}
+
+"main.ActionState" <|-- "main.Account"
+"main.ActionState" <|-- "main.CloseState"
+"main.ActionState" <|-- "main.NormalState"
+"main.ActionState" <|-- "main.RestrictState"
+
+namespace mediator {
+    class ChatRoom << (S,Aquamarine) >> {
+        + Message string
+
+        - sendMessage(msg string, user User) 
+        - receiveMessage() string
+
+    }
+    interface Mediator  {
+        - sendMessage(msg string, user User) 
+        - receiveMessage() string
+
+    }
+    class User << (S,Aquamarine) >> {
+        - name string
+        - mediator Mediator
+
+        - getName() string
+        - setMediator(mediator Mediator) 
+        - sendMessage(msg string) 
+        - receiveMessage() string
+
+    }
+}
+
+"mediator.Mediator" <|-- "mediator.ChatRoom"
+
+namespace memento {
+    class Caretaker << (S,Aquamarine) >> {
+        - mementos []Memento
+        - currentIndex int
+
+        + AddMemento(m Memento) 
+        + Undo(t *TextEditor) 
+        + Redo(t *TextEditor) 
+
+    }
+    interface Memento  {
+        + GetState() string
+
+    }
+    interface Originator  {
+        + Save() Memento
+        + Restore(m Memento) 
+
+    }
+    class TextEditor << (S,Aquamarine) >> {
+        - state string
+
+        + Save() Memento
+        + Restore(m Memento) 
+        + SetState(state string) 
+        + GetState() string
+
+    }
+    class textMemento << (S,Aquamarine) >> {
+        - state string
+
+        + GetState() string
+
+    }
+}
+
+"memento.Memento" <|-- "memento.TextEditor"
+"memento.Originator" <|-- "memento.TextEditor"
+"memento.Memento" <|-- "memento.textMemento"
+
+namespace observer {
+    interface Customer  {
+        - update() 
+
+    }
+    class CustomerA << (S,Aquamarine) >> {
+        - update() 
+
+    }
+    class CustomerB << (S,Aquamarine) >> {
+        - update() 
+
+    }
+    class NewsOffice << (S,Aquamarine) >> {
+        - customers []Customer
+
+        - addCustomer(c Customer) 
+        - newspaperCome() 
+        - notifyAllCustomer() 
+
+    }
+}
+
+"observer.Customer" <|-- "observer.CustomerA"
+"observer.Customer" <|-- "observer.CustomerB"
+
+namespace strategy {
+    class CashStrategy << (S,Aquamarine) >> {
+        - name string
+
+        + Pay(amount float64) error
+
+    }
+    class CreditCardStrategy << (S,Aquamarine) >> {
+        - name string
+        - cardNum string
+        - password string
+
+        + Pay(amount float64) error
+
+    }
+    class PaymentContext << (S,Aquamarine) >> {
+        - amount float64
+        - strategy PaymentStrategy
+
+        + Pay() error
+
+    }
+    interface PaymentStrategy  {
+        + Pay(amount float64) error
+
+    }
+}
+
+"strategy.PaymentStrategy" <|-- "strategy.CashStrategy"
+"strategy.PaymentStrategy" <|-- "strategy.CreditCardStrategy"
+
+namespace templateMethod {
+    interface Project  {
+        - pre() 
+        - reqinfo() 
+        - end() 
+
+    }
+    class req << (S,Aquamarine) >> {
+        - pre() 
+        - end() 
+        - reqinfo() 
+
+    }
+    class somereq << (S,Aquamarine) >> {
+        - reqinfo() 
+
+    }
+}
+"templateMethod.req" *-- "templateMethod.somereq"
+
+"templateMethod.Project" <|-- "templateMethod.req"
+
+namespace visitor {
+    class DevelopmentVisitor << (S,Aquamarine) >> {
+        - env string
+
+        + Visit() 
+
+    }
+    class Element << (S,Aquamarine) >> {
+        - visitors []IVisitor
+
+        + Accept(visitor IVisitor) 
+
+    }
+    class ExampleLog << (S,Aquamarine) >> {
+        + Print() 
+
+    }
+    interface IElement  {
+        + Accept(visitor IVisitor) 
+
+    }
+    interface IVisitor  {
+        + Visit() 
+
+    }
+    class ProductionVisitor << (S,Aquamarine) >> {
+        - env string
+
+        + Visit() 
+
+    }
+}
+"visitor.Element" *-- "visitor.ExampleLog"
+
+"visitor.IVisitor" <|-- "visitor.DevelopmentVisitor"
+"visitor.IElement" <|-- "visitor.Element"
+"visitor.IVisitor" <|-- "visitor.ProductionVisitor"
+
+@enduml

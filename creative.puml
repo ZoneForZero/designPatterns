@@ -1,0 +1,99 @@
+@startuml
+namespace builder {
+    class ConcreteBuilder << (S,Aquamarine) >> {
+        - goods *Goods
+
+        + Build() *Goods
+        + SetName(name string) GoodsBuilder
+        + SetPrice(price float64) GoodsBuilder
+        + SetCount(count int) GoodsBuilder
+
+    }
+    class Goods << (S,Aquamarine) >> {
+        + Name string
+        + Price float64
+        + Count int
+
+    }
+    interface GoodsBuilder  {
+        + SetName(name string) GoodsBuilder
+        + SetPrice(price float64) GoodsBuilder
+        + SetCount(count int) GoodsBuilder
+        + Build() *Goods
+
+    }
+}
+
+"builder.GoodsBuilder" <|-- "builder.ConcreteBuilder"
+
+namespace factoryMethod {
+    interface Operator  {
+        + SetA( int) 
+        + SetB( int) 
+        + Result() int
+
+    }
+    class OperatorBase << (S,Aquamarine) >> {
+        - a int
+
+        + SetA(a int) 
+        + SetB(b int) 
+
+    }
+    interface OperatorFactory  {
+        + Create() Operator
+
+    }
+    class PlusOperator << (S,Aquamarine) >> {
+        + Result() int
+
+    }
+    class PlusOperatorFactory << (S,Aquamarine) >> {
+        + Create() Operator
+
+    }
+}
+"factoryMethod.OperatorBase" *-- "factoryMethod.PlusOperator"
+
+"factoryMethod.OperatorFactory" <|-- "factoryMethod.PlusOperatorFactory"
+
+namespace prototype {
+    class ConcretePrototype << (S,Aquamarine) >> {
+        - name string
+
+        + Clone() Prototype
+
+    }
+    interface Prototype  {
+        + Clone() Prototype
+
+    }
+}
+
+"prototype.Prototype" <|-- "prototype.ConcretePrototype"
+
+namespace simpleFactory {
+    interface IDownload  {
+        + Download() 
+
+    }
+    class NfsDownloader << (S,Aquamarine) >> {
+        + Download() 
+
+    }
+    class SmbDownloader << (S,Aquamarine) >> {
+        + Download() 
+
+    }
+}
+
+"simpleFactory.IDownload" <|-- "simpleFactory.NfsDownloader"
+"simpleFactory.IDownload" <|-- "simpleFactory.SmbDownloader"
+
+namespace singleton {
+    class Singleton << (S,Aquamarine) >> {
+    }
+}
+
+
+@enduml
